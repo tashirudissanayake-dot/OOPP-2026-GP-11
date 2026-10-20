@@ -2,7 +2,6 @@ package com.fot.tms.model;
 
 import java.io.Serializable;
 
-//example
 
 public class Mark implements Serializable {
     private int markId;
