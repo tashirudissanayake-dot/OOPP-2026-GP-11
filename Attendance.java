@@ -50,7 +50,8 @@ public class Attendance implements Serializable
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(int studentId) 
+{
 
         this.studentId = studentId;
     }
