@@ -375,6 +375,7 @@ public class TODashboardFrame extends JFrame {
         lblTitle.setForeground(UIConstants.TEXT_PRIMARY);
         topBar.add(lblTitle, BorderLayout.WEST);
 
+
         JPanel btnBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         btnBar.setOpaque(false);
 
