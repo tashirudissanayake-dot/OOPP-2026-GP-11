@@ -13,6 +13,7 @@ import java.awt.*;
 
 
 
+
 public class ChangePasswordDialog extends JDialog {
     private final User user;
     private final UserService userService;
@@ -42,18 +43,21 @@ public class ChangePasswordDialog extends JDialog {
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        //current pw
         gbc.gridx = 0; gbc.gridy = 0;
         mainPanel.add(new JLabel("Current Password:"), gbc);
         gbc.gridx = 1;
         txtCurrentPass = UIHelper.createStyledPasswordField(15);
         mainPanel.add(txtCurrentPass, gbc);
 
+        //new pw
         gbc.gridx = 0; gbc.gridy = 1;
         mainPanel.add(new JLabel("New Password:"), gbc);
         gbc.gridx = 1;
         txtNewPass = UIHelper.createStyledPasswordField(15);
         mainPanel.add(txtNewPass, gbc);
 
+        //confirm pw
         gbc.gridx = 0; gbc.gridy = 2;
         mainPanel.add(new JLabel("Confirm Password:"), gbc);
         gbc.gridx = 1;
@@ -61,6 +65,7 @@ public class ChangePasswordDialog extends JDialog {
         mainPanel.add(txtConfirmPass, gbc);
 
         add(mainPanel, BorderLayout.CENTER);
+
 
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         btnPanel.setBackground(UIConstants.BG_TABLE_HEADER);
@@ -85,6 +90,7 @@ public class ChangePasswordDialog extends JDialog {
             UIHelper.showWarning(this, "Please fill in all password fields.", "Missing Information");
             return;
         }
+
 
         User fresh = userService.getUserById(user.getUserId());
         if (fresh == null || !PasswordUtil.verifyPassword(currentPass, fresh.getPasswordHash())) {
