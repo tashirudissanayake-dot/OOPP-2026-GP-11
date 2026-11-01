@@ -2,9 +2,6 @@
 CREATE DATABASE IF NOT EXISTS fot_tms_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE fot_tms_db;
 
-
-
-
 CREATE TABLE IF NOT EXISTS users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -13,6 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'Active' 
 ) ENGINE=InnoDB;
+
+
 
 CREATE TABLE IF NOT EXISTS profiles (
     profile_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,8 +25,6 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 
 
-
-
 INSERT INTO users (user_id, username, password_hash, role, email, status) VALUES
 (1, 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Admin', 'admin@fot.ruh.ac.lk', 'Active')
 ON DUPLICATE KEY UPDATE username=VALUES(username);
@@ -35,9 +32,6 @@ ON DUPLICATE KEY UPDATE username=VALUES(username);
 INSERT INTO profiles (profile_id, user_id, first_name, last_name, contact_no, profile_picture_path) VALUES
 (1, 1, 'System', 'Administrator', '+94771122334', '')
 ON DUPLICATE KEY UPDATE first_name=VALUES(first_name);
-
-
-
 
 
 INSERT INTO users (user_id, username, password_hash, role, email, status) VALUES
@@ -56,6 +50,7 @@ INSERT INTO profiles (profile_id, user_id, first_name, last_name, contact_no, pr
 (6, 6, 'Mr. Kusal', 'Mendis', '+94712345675', '')
 ON DUPLICATE KEY UPDATE first_name=VALUES(first_name);
 
+
 INSERT INTO users (user_id, username, password_hash, role, email, status) VALUES
 (7, 'to_nuwan', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 'TO', 'nuwan@fot.ruh.ac.lk', 'Active'),
 (8, 'to_sandya', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 'TO', 'sandya@fot.ruh.ac.lk', 'Active'),
@@ -69,6 +64,7 @@ INSERT INTO profiles (profile_id, user_id, first_name, last_name, contact_no, pr
 (9, 9, 'Pradeep', 'Alwis', '+94781234563', ''),
 (10, 10, 'Asanka', 'Wickrama', '+94781234564', '')
 ON DUPLICATE KEY UPDATE first_name=VALUES(first_name);
+
 
 INSERT INTO users (user_id, username, password_hash, role, email, status) VALUES
 (11, 'TG/2024/2109', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 'Undergraduate', 'tg2109@fot.ruh.ac.lk', 'Active'),
