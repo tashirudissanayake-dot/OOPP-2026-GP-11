@@ -14,7 +14,6 @@ import java.awt.*;
 
 public class UIHelper {
 
-
     private UIHelper() {}
 
     public static JButton createStyledButton(String text, Color bgColor, Color fgColor) {
