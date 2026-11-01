@@ -1,5 +1,11 @@
+-- ====================================================================
+-- Member 2: Course Curriculum, Timetables, Learning Materials & Notices
+-- Database Script: courses, course_materials, timetables, notices
+-- ====================================================================
+
 USE fot_tms_db;
 
+-- 1. Table: courses
 CREATE TABLE IF NOT EXISTS courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     coordinator_id INT DEFAULT NULL,
@@ -12,6 +18,7 @@ CREATE TABLE IF NOT EXISTS courses (
     CONSTRAINT fk_course_coordinator FOREIGN KEY (coordinator_id) REFERENCES users(user_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+-- 2. Table: course_materials
 CREATE TABLE IF NOT EXISTS course_materials (
     material_id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT NOT NULL,
@@ -21,20 +28,22 @@ CREATE TABLE IF NOT EXISTS course_materials (
     CONSTRAINT fk_material_course FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 3. Table: notices
 CREATE TABLE IF NOT EXISTS notices (
     notice_id INT AUTO_INCREMENT PRIMARY KEY,
     author_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     content TEXT NOT NULL,
-    target_role VARCHAR(50) NOT NULL DEFAULT 'All',
+    target_role VARCHAR(50) NOT NULL DEFAULT 'All', -- 'All', 'Lecturer', 'TO', 'Undergraduate'
     posted_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_notice_author FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- 4. Table: timetables
 CREATE TABLE IF NOT EXISTS timetables (
     timetable_id INT AUTO_INCREMENT PRIMARY KEY,
     course_id INT NOT NULL,
-    session_type VARCHAR(20) NOT NULL,
+    session_type VARCHAR(20) NOT NULL, -- 'Theory', 'Practical'
     day_of_week VARCHAR(20) NOT NULL,
     time_slot VARCHAR(50) NOT NULL,
     venue VARCHAR(50) NOT NULL,
@@ -42,6 +51,7 @@ CREATE TABLE IF NOT EXISTS timetables (
     CONSTRAINT fk_timetable_course FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- Baseline Seeding for Courses
 INSERT INTO courses (course_id, coordinator_id, course_code, course_name, credits, semester, ca_weight, final_weight) VALUES
 (1, 2, 'ICT2113', 'Business Economics', 3, 1, 40.00, 60.00),
 (2, 3, 'ICT2123', 'Object Oriented Programming', 3, 1, 40.00, 60.00),
@@ -54,6 +64,7 @@ INSERT INTO courses (course_id, coordinator_id, course_code, course_name, credit
 (9, 5, 'ICT2182', 'English', 2, 1, 40.00, 60.00)
 ON DUPLICATE KEY UPDATE course_code=VALUES(course_code);
 
+-- Baseline Seeding for Course Materials
 INSERT INTO course_materials (material_id, course_id, title, file_path, uploaded_date) VALUES
 (1, 2, 'Lecture 01 - Intro to OOP Concepts', 'materials/ict2123_lec01.pdf', NOW() - INTERVAL 10 DAY),
 (2, 2, 'Lecture 02 - Classes and Objects in Java', 'materials/ict2123_lec02.pdf', NOW() - INTERVAL 8 DAY),
@@ -64,6 +75,7 @@ INSERT INTO course_materials (material_id, course_id, title, file_path, uploaded
 (7, 3, 'E-Business Systems Lecture Notes 01', 'materials/ict2133_unit01.pdf', NOW() - INTERVAL 7 DAY)
 ON DUPLICATE KEY UPDATE title=VALUES(title);
 
+-- Baseline Seeding for Notices
 INSERT INTO notices (notice_id, author_id, title, content, target_role, posted_date) VALUES
 (1, 1, 'Welcome to Academic Year 2026/2027', 'All academic sessions and practicum assessments will strictly adhere to UGC Commission Circular No. 12-2024. Please check your timetables.', 'All', NOW() - INTERVAL 15 DAY),
 (2, 1, 'Attendance Policy & Eligibility Criteria Notice', 'Undergraduates must maintain at least 80% effective attendance (including approved medicals) and score >= 40% in CA to sit for final semester examinations.', 'Undergraduate', NOW() - INTERVAL 10 DAY),
@@ -72,6 +84,7 @@ INSERT INTO notices (notice_id, author_id, title, content, target_role, posted_d
 (5, 3, 'Lecturers Faculty Board Meeting', 'Discussion on semester evaluation matrices and CA weightings will be held in the Dean Office boardroom.', 'Lecturer', NOW() - INTERVAL 1 DAY)
 ON DUPLICATE KEY UPDATE title=VALUES(title);
 
+-- Baseline Seeding for Timetables
 INSERT INTO timetables (timetable_id, course_id, session_type, day_of_week, time_slot, venue, department) VALUES
 (1, 2, 'Theory', 'Monday', '08:00 - 10:00', 'LT-01', 'Information and Communication Technology'),
 (2, 5, 'Practical', 'Monday', '10:00 - 12:00', 'IT-Lab-01', 'Information and Communication Technology'),
