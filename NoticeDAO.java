@@ -29,6 +29,27 @@ public class NoticeDAO {
         return list;
     }
 
+    public Notice findById(int noticeId) {
+        String sql = "SELECT n.notice_id, n.author_id, n.title, n.content, n.target_role, n.posted_date, " +
+                     "CONCAT(p.first_name, ' ', p.last_name) AS author_name " +
+                     "FROM notices n " +
+                     "JOIN users u ON n.author_id = u.user_id " +
+                     "LEFT JOIN profiles p ON u.user_id = p.user_id " +
+                     "WHERE n.notice_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, noticeId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapNotice(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("NoticeDAO findById error: " + e.getMessage());
+        }
+        return null;
+    }
+
     public List<Notice> findByTargetRole(String userRole) {
         List<Notice> list = new ArrayList<>();
         String sql = "SELECT n.notice_id, n.author_id, n.title, n.content, n.target_role, n.posted_date, " +

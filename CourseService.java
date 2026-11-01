@@ -53,6 +53,10 @@ public class CourseService {
         return materialDAO.findAll();
     }
 
+    public CourseMaterial getMaterialById(int materialId) {
+        return materialDAO.findById(materialId);
+    }
+
     public boolean addCourseMaterial(CourseMaterial material) {
         if (material == null || !ValidationUtil.isNotEmpty(material.getTitle())) {
             return false;

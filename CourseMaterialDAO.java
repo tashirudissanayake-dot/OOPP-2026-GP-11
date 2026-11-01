@@ -31,6 +31,26 @@ public class CourseMaterialDAO {
         return list;
     }
 
+    public CourseMaterial findById(int materialId) {
+        String sql = "SELECT m.material_id, m.course_id, m.title, m.file_path, m.uploaded_date, " +
+                     "c.course_code, c.course_name " +
+                     "FROM course_materials m " +
+                     "JOIN courses c ON m.course_id = c.course_id " +
+                     "WHERE m.material_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, materialId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapMaterial(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("CourseMaterialDAO findById error: " + e.getMessage());
+        }
+        return null;
+    }
+
     public List<CourseMaterial> findAll() {
         List<CourseMaterial> list = new ArrayList<>();
         String sql = "SELECT m.material_id, m.course_id, m.title, m.file_path, m.uploaded_date, " +

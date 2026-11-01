@@ -17,6 +17,10 @@ public class NoticeService {
         return noticeDAO.findAll();
     }
 
+    public Notice getNoticeById(int noticeId) {
+        return noticeDAO.findById(noticeId);
+    }
+
     public List<Notice> getNoticesForRole(String role) {
         return noticeDAO.findByTargetRole(role);
     }
