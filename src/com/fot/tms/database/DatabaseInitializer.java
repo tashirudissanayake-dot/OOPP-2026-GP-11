@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 
+
 public class DatabaseInitializer {
 
     public static boolean initializeDatabaseIfNeeded() {

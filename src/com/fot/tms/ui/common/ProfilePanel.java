@@ -53,7 +53,6 @@ public class ProfilePanel extends JPanel {
  setBorder(new EmptyBorder(25, 25, 25, 25));
 
 
-
  JPanel headerPanel = new JPanel(new BorderLayout());
  headerPanel.setOpaque(false);
  JLabel lblTitle = new JLabel("My Profile & Account Details");
@@ -67,7 +66,6 @@ public class ProfilePanel extends JPanel {
  headerPanel.add(lblTitle, BorderLayout.NORTH);
  headerPanel.add(lblSub, BorderLayout.SOUTH);
  add(headerPanel, BorderLayout.NORTH);
-
 
 
  JPanel card = UIHelper.createCardPanel();

@@ -61,10 +61,10 @@ public class LoginFrame extends JFrame {
 
         JLabel lblDesc = new JLabel("<html><br>Course: ICT2132 - Object Oriented Programming Practicum<br>" +
                 "Compliant with UGC Circular No. 12-2024.<br><br>" +
-            " Role-Based Access Control (RBAC)<br>" +
-            " 15 Theory & 15 Practical Attendance Engine<br>" +
-            " Continuous Assessment & Exam Eligibility<br>" +
-            " SGPA & CGPA Calculation Platform</html>");
+            "• Role-Based Access Control (RBAC)<br>" +
+            "• 15 Theory & 15 Practical Attendance Engine<br>" +
+            "• Continuous Assessment & Exam Eligibility<br>" +
+            "• SGPA & CGPA Calculation Platform</html>");
         lblDesc.setFont(UIConstants.FONT_REGULAR);
         lblDesc.setForeground(new Color(226, 232, 240));
 

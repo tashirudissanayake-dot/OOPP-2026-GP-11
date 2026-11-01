@@ -22,7 +22,6 @@ import java.util.List;
 
 
 
-
 public class AdminDashboardFrame extends JFrame {
  private final UserService userService;
  private final CourseService courseService;
@@ -68,7 +67,7 @@ public class AdminDashboardFrame extends JFrame {
  private void initComponents() {
  JPanel root = new JPanel(new BorderLayout());
 
- //sidebar
+
  JPanel sidebar = createSidebar();
  root.add(sidebar, BorderLayout.WEST);
 
@@ -104,6 +103,7 @@ public class AdminDashboardFrame extends JFrame {
  sidebar.setBorder(new EmptyBorder(25, 15, 25, 15));
 
 
+
  JLabel lblBrand = new JLabel("FoT-TMS Admin");
  lblBrand.setFont(new Font("Segoe UI", Font.BOLD, 20));
  lblBrand.setForeground(Color.WHITE);
@@ -117,6 +117,7 @@ public class AdminDashboardFrame extends JFrame {
  sidebar.add(lblBrand);
  sidebar.add(lblSub);
  sidebar.add(Box.createRigidArea(new Dimension(0, 30)));
+
 
 
  sidebar.add(createNavButton(" Dashboard Overview", "OVERVIEW"));
@@ -134,6 +135,7 @@ public class AdminDashboardFrame extends JFrame {
  sidebar.add(createNavButton(" Admin Profile", "PROFILE"));
 
  sidebar.add(Box.createVerticalGlue());
+
 
 
  JButton btnLogout = UIHelper.createDangerButton(" Sign Out");
@@ -192,9 +194,8 @@ public class AdminDashboardFrame extends JFrame {
  return header;
  }
 
-
-
-
+ 
+ 
  private JPanel createOverviewPanel() {
  JPanel panel = new JPanel(new BorderLayout(20, 20));
  panel.setBackground(UIConstants.BG_MAIN);
@@ -220,6 +221,7 @@ public class AdminDashboardFrame extends JFrame {
  statsGrid.add(UIHelper.createStatCard("UGC Circular", "12-2024", UIConstants.SUCCESS_COLOR));
 
  panel.add(statsGrid, BorderLayout.NORTH);
+
 
 
  JPanel infoCard = UIHelper.createCardPanel();
@@ -252,15 +254,13 @@ public class AdminDashboardFrame extends JFrame {
  }
 
 
-
-
-
  private JPanel createUserManagementPanel() {
  JPanel panel = new JPanel(new BorderLayout(15, 15));
  panel.setBackground(UIConstants.BG_MAIN);
  panel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-
+ 
+ 
  JPanel topBar = new JPanel(new BorderLayout(10, 10));
  topBar.setOpaque(false);
 
@@ -296,8 +296,8 @@ public class AdminDashboardFrame extends JFrame {
  topBar.add(actionPanel, BorderLayout.EAST);
  panel.add(topBar, BorderLayout.NORTH);
 
-
-
+ 
+ 
  String[] cols = {"User ID", "Username / Reg No", "Full Name", "Role", "Email", "Contact No", "Status"};
  userTableModel = new DefaultTableModel(cols, 0) {
  @Override
@@ -530,7 +530,6 @@ public class AdminDashboardFrame extends JFrame {
 
 
 
-
  private JPanel createCourseManagementPanel() {
  JPanel panel = new JPanel(new BorderLayout(15, 15));
  panel.setBackground(UIConstants.BG_MAIN);
@@ -628,7 +627,7 @@ public class AdminDashboardFrame extends JFrame {
 
  List<User> lecturers = userService.getUsersByRole("Lecturer");
  JComboBox<User> cmbLecturers = new JComboBox<>();
- cmbLecturers.addItem(null); 
+ cmbLecturers.addItem(null);
  
  for (User u : lecturers) {
  cmbLecturers.addItem(u);
@@ -757,8 +756,6 @@ public class AdminDashboardFrame extends JFrame {
  }
  }
  }
-
-
 
 
  private JPanel createTimetableManagementPanel() {
@@ -946,8 +943,7 @@ public class AdminDashboardFrame extends JFrame {
  }
  }
 
- 
- 
+
 
  private JPanel createNoticeManagementPanel() {
  JPanel panel = new JPanel(new BorderLayout(15, 15));
@@ -1120,9 +1116,6 @@ public class AdminDashboardFrame extends JFrame {
  }
  }
  }
-
-
-
 
 
  private JPanel createBatchReportsPanel() {

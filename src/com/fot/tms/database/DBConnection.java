@@ -6,9 +6,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-
-
-
 public class DBConnection {
     private static volatile DBConnection instance;
     private Connection connection;

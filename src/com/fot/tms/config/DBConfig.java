@@ -18,5 +18,4 @@ public class DBConfig {
             + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8";
 
     private DBConfig() {}
-    
 }
