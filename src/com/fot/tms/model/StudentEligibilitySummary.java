@@ -2,10 +2,7 @@ package com.fot.tms.model;
 
 import java.io.Serializable;
 
-/**
- * Summary DTO for Combined Exam Eligibility and Academic Standing.
- * Combines Attendance criteria (>= 80%) + CA marks criteria (>= 40%).
- */
+
 public class StudentEligibilitySummary implements Serializable {
     private int studentId;
     private String studentRegNo;

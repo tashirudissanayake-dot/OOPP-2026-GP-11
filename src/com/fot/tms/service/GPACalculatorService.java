@@ -9,10 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Service for SGPA and CGPA calculation (FR-23) based on UGC Commission Circular No. 12-2024.
- * Demonstrates OOP Abstraction via implementing IGPACalculator.
- */
+
 public class GPACalculatorService implements IGPACalculator {
     private final MarkDAO markDAO;
     private final UserDAO userDAO;
