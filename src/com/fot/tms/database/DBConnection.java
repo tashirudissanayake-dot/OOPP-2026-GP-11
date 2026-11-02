@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 /**
  * Centralized Database Connection Singleton.
  * Provides safe parameterized connection lifecycle management.
- * Features intelligent automatic driver resolution: dynamically loads
- * the MySQL JDBC Driver from lib/ folder if not found on classpath.
+ * Features intelligent automatic driver resolution: recursively searches
+ * and dynamically loads the MySQL JDBC Driver from any project lib/ folder.
  */
 public class DBConnection {
     private static volatile DBConnection instance;
@@ -47,9 +47,10 @@ public class DBConnection {
                 Driver driver = (Driver) Class.forName("com.mysql.cj.jdbc.Driver", true, loader)
                         .getDeclaredConstructor().newInstance();
                 DriverManager.registerDriver(new DriverShim(driver));
-                System.out.println("[FoT-TMS] MySQL JDBC Driver successfully auto-loaded from: " + jarFile.getPath());
+                System.out.println("[FoT-TMS] MySQL JDBC Driver successfully auto-loaded from: " + jarFile.getAbsolutePath());
             } else {
-                System.err.println("MySQL JDBC Driver not found: Please ensure mysql-connector jar exists in lib/ directory.");
+                System.err.println("[FoT-TMS WARNING] Could not find mysql-connector*.jar in any 'lib' folder!");
+                System.err.println("Working Directory: " + new File(".").getAbsolutePath());
             }
         } catch (Exception ex) {
             System.err.println("Database auto-driver loader notification: " + ex.getMessage());
@@ -57,26 +58,40 @@ public class DBConnection {
     }
 
     /**
-     * Searches common relative paths for the MySQL connector jar file.
+     * Searches upwards from both class location and working directory for mysql-connector*.jar.
      */
     private static File findMySQLJar() {
-        String[] possiblePaths = {
-            "lib/mysql-connector-j-8.3.0.jar",
-            "../lib/mysql-connector-j-8.3.0.jar",
-            "lib",
-            "../lib"
-        };
-
-        for (String path : possiblePaths) {
-            File f = new File(path);
-            if (f.exists() && f.isFile() && f.getName().endsWith(".jar")) {
-                return f;
+        // 1. Search upwards from the running class location (e.g. out/production/module -> project root)
+        try {
+            File current = new File(DBConnection.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            for (int i = 0; i < 6 && current != null; i++) {
+                File found = searchDirForJar(new File(current, "lib"));
+                if (found != null) return found;
+                current = current.getParentFile();
             }
-            if (f.exists() && f.isDirectory()) {
-                File[] jars = f.listFiles((dir, name) -> name.startsWith("mysql-connector") && name.endsWith(".jar"));
-                if (jars != null && jars.length > 0) {
-                    return jars[0];
-                }
+        } catch (Exception ignored) {}
+
+        // 2. Search upwards from working directory
+        try {
+            File current = new File(".").getAbsoluteFile();
+            for (int i = 0; i < 6 && current != null; i++) {
+                File found = searchDirForJar(new File(current, "lib"));
+                if (found != null) return found;
+                current = current.getParentFile();
+            }
+        } catch (Exception ignored) {}
+
+        return null;
+    }
+
+    private static File searchDirForJar(File dir) {
+        if (dir != null && dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles((d, name) -> {
+                String n = name.toLowerCase();
+                return n.contains("mysql") && n.endsWith(".jar");
+            });
+            if (files != null && files.length > 0) {
+                return files[0];
             }
         }
         return null;
