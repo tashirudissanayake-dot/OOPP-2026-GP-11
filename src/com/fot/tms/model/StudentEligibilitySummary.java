@@ -2,9 +2,11 @@ package com.fot.tms.model;
 
 import java.io.Serializable;
 
-
-public class Mark implements Serializable {
-    private int markId;
+/**
+ * Summary DTO for Combined Exam Eligibility and Academic Standing.
+ * Combines Attendance criteria (>= 80%) + CA marks criteria (>= 40%).
+ */
+public class StudentEligibilitySummary implements Serializable {
     private int studentId;
     private String studentRegNo;
     private String studentName;
@@ -12,38 +14,21 @@ public class Mark implements Serializable {
     private String courseCode;
     private String courseName;
     private int credits;
-    private double caQuiz;
-    private double caAssessment;
-    private double caMid;
+
+    private double effectiveAttendancePercentage;
+    private boolean attendanceEligible; // >= 80%
+
     private double caTotal;
+    private boolean caEligible; // >= 40%
+
+    private boolean finalExamEligible; // Attendance >= 80% AND CA >= 40%
+
     private double finalExamMark;
     private double overallMark;
     private String letterGrade;
     private double gradePoint;
 
-    public Mark() {}
-
-    public Mark(int markId, int studentId, int courseId, double caQuiz, double caAssessment, double caMid, double caTotal, double finalExamMark, double overallMark, String letterGrade, double gradePoint) {
-        this.markId = markId;
-        this.studentId = studentId;
-        this.courseId = courseId;
-        this.caQuiz = caQuiz;
-        this.caAssessment = caAssessment;
-        this.caMid = caMid;
-        this.caTotal = caTotal;
-        this.finalExamMark = finalExamMark;
-        this.overallMark = overallMark;
-        this.letterGrade = letterGrade;
-        this.gradePoint = gradePoint;
-    }
-
-    public int getMarkId() {
-        return markId;
-    }
-
-    public void setMarkId(int markId) {
-        this.markId = markId;
-    }
+    public StudentEligibilitySummary() {}
 
     public int getStudentId() {
         return studentId;
@@ -101,28 +86,20 @@ public class Mark implements Serializable {
         this.credits = credits;
     }
 
-    public double getCaQuiz() {
-        return caQuiz;
+    public double getEffectiveAttendancePercentage() {
+        return effectiveAttendancePercentage;
     }
 
-    public void setCaQuiz(double caQuiz) {
-        this.caQuiz = caQuiz;
+    public void setEffectiveAttendancePercentage(double effectiveAttendancePercentage) {
+        this.effectiveAttendancePercentage = effectiveAttendancePercentage;
     }
 
-    public double getCaAssessment() {
-        return caAssessment;
+    public boolean isAttendanceEligible() {
+        return attendanceEligible;
     }
 
-    public void setCaAssessment(double caAssessment) {
-        this.caAssessment = caAssessment;
-    }
-
-    public double getCaMid() {
-        return caMid;
-    }
-
-    public void setCaMid(double caMid) {
-        this.caMid = caMid;
+    public void setAttendanceEligible(boolean attendanceEligible) {
+        this.attendanceEligible = attendanceEligible;
     }
 
     public double getCaTotal() {
@@ -131,6 +108,22 @@ public class Mark implements Serializable {
 
     public void setCaTotal(double caTotal) {
         this.caTotal = caTotal;
+    }
+
+    public boolean isCaEligible() {
+        return caEligible;
+    }
+
+    public void setCaEligible(boolean caEligible) {
+        this.caEligible = caEligible;
+    }
+
+    public boolean isFinalExamEligible() {
+        return finalExamEligible;
+    }
+
+    public void setFinalExamEligible(boolean finalExamEligible) {
+        this.finalExamEligible = finalExamEligible;
     }
 
     public double getFinalExamMark() {
@@ -163,9 +156,5 @@ public class Mark implements Serializable {
 
     public void setGradePoint(double gradePoint) {
         this.gradePoint = gradePoint;
-    }
-
-    public boolean isCaEligible() {
-        return caTotal >= 40.0;
     }
 }

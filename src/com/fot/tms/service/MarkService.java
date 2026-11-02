@@ -12,7 +12,9 @@ import com.fot.tms.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Service for Mark calculation, Grading per UGC Circular 12-2024, and Exam Eligibility (FR-17 to FR-23).
+ */
 public class MarkService {
     private final MarkDAO markDAO;
     private final CourseDAO courseDAO;
@@ -57,11 +59,11 @@ public class MarkService {
         double caWeight = course != null ? course.getCaWeight() : 40.0;
         double finalWeight = course != null ? course.getFinalWeight() : 60.0;
 
-        
+        // Calculate CA Total (average of components out of 100)
         double caTotal = (caQuiz + caAssessment + caMid) / 3.0;
         caTotal = Math.round(caTotal * 100.0) / 100.0;
 
-    
+        // Calculate Overall Mark based on weightings
         double overallMark = ((caTotal * (caWeight / 100.0)) + (finalExamMark * (finalWeight / 100.0)));
         overallMark = Math.round(overallMark * 100.0) / 100.0;
 
@@ -131,7 +133,7 @@ public class MarkService {
         boolean caEligible = caTot >= 40.0;
         summary.setCaEligible(caEligible);
 
-    
+        // FR-20: Combined eligibility check (Effective Attendance >= 80% AND CA >= 40%)
         boolean finalEligible = attEligible && caEligible;
         summary.setFinalExamEligible(finalEligible);
 
