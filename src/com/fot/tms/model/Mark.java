@@ -2,10 +2,7 @@ package com.fot.tms.model;
 
 import java.io.Serializable;
 
-/**
- * Model representing Student Course Marks and Grades.
- * Compliant with UGC Circular No. 12-2024 grading standards.
- */
+
 public class Mark implements Serializable {
     private int markId;
     private int studentId;
