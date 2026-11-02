@@ -11,7 +11,6 @@ import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -20,7 +19,7 @@ import java.util.logging.Logger;
  * Centralized Database Connection Singleton.
  * Provides safe parameterized connection lifecycle management.
  * Features intelligent automatic driver resolution: recursively searches
- * all candidate lib folders and loads MySQL JDBC driver at runtime.
+ * parent and child folders to guarantee finding MySQL JDBC jar in any environment.
  */
 public class DBConnection {
     private static volatile DBConnection instance;
@@ -63,7 +62,6 @@ public class DBConnection {
                 }
             } else {
                 System.err.println("[FoT-TMS ERROR] Cannot find MySQL jar file.");
-                System.err.println("Current directory: " + new File("").getAbsolutePath());
             }
         } catch (Exception ex) {
             System.err.println("[FoT-TMS ERROR] Auto-load failed: " + ex.getMessage());
@@ -72,54 +70,72 @@ public class DBConnection {
     }
 
     /**
-     * Searches for any lib directory containing the JDBC JAR.
+     * Recursively searches upward and downward to locate any lib folder with the MySQL jar.
      */
     private static File findMySQLJar() {
-        List<File> searchRoots = new ArrayList<>();
+        List<File> roots = new ArrayList<>();
 
-        // 1. Current working directory
+        // 1. Current working directory and parents
         File cur = new File("").getAbsoluteFile();
         while (cur != null) {
-            searchRoots.add(cur);
+            roots.add(cur);
             cur = cur.getParentFile();
         }
 
-        // 2. Code source directory (out/production/...)
+        // 2. Code source location and parents
         try {
             String path = DBConnection.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            // Handle URL decoding / spaces
             path = java.net.URLDecoder.decode(path, "UTF-8");
             File codeDir = new File(path);
             while (codeDir != null) {
-                if (!searchRoots.contains(codeDir)) {
-                    searchRoots.add(codeDir);
+                if (!roots.contains(codeDir)) {
+                    roots.add(codeDir);
                 }
                 codeDir = codeDir.getParentFile();
             }
         } catch (Exception ignored) {}
 
-        String[] folderNames = {"lib", "libs", "Lib", "src/lib"};
+        // For each root, search direct folders and child folders up to 3 levels deep
+        for (File root : roots) {
+            File found = searchDirRecursively(root, 0);
+            if (found != null) {
+                return found;
+            }
+        }
+        return null;
+    }
 
-        for (File root : searchRoots) {
-            for (String fName : folderNames) {
-                File dir = new File(root, fName);
-                if (dir.exists() && dir.isDirectory()) {
-                    File[] files = dir.listFiles();
-                    if (files != null && files.length > 0) {
-                        for (File f : files) {
-                            String name = f.getName().toLowerCase();
-                            // If it's a jar and not flatlaf, it's the MySQL driver
-                            if (name.endsWith(".jar") && !name.contains("flatlaf")) {
-                                return f;
-                            }
-                            if (name.contains("mysql")) {
-                                return f;
-                            }
-                        }
+    private static File searchDirRecursively(File dir, int depth) {
+        if (dir == null || !dir.exists() || depth > 3) return null;
+        String dirName = dir.getName().toLowerCase();
+        if (dirName.equals(".git") || dirName.equals(".idea") || dirName.equals("out")) return null;
+
+        File[] files = dir.listFiles();
+        if (files == null) return null;
+
+        // If this folder is a lib folder, look for jar files inside
+        if (dirName.equals("lib") || dirName.equals("libs")) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    String name = f.getName().toLowerCase();
+                    if (name.endsWith(".jar") && !name.contains("flatlaf")) {
+                        return f;
+                    }
+                    if (name.contains("mysql")) {
+                        return f;
                     }
                 }
             }
         }
+
+        // Search subdirectories
+        for (File f : files) {
+            if (f.isDirectory()) {
+                File found = searchDirRecursively(f, depth + 1);
+                if (found != null) return found;
+            }
+        }
+
         return null;
     }
 
