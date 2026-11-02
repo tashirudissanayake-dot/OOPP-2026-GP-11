@@ -1,3 +1,4 @@
+part 1
 Maintaince attendance and medicals
 ﻿# Faculty of Technology Management System (FoT-TMS)
 **Mini-Project: ICT2132 - Object Oriented Programming Practicum**
