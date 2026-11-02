@@ -19,10 +19,8 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-/**
- * Undergraduate Student Portal for FoT-TMS.
- * Pure Java Swing interface for Enrolled Students (FR-05, FR-08, FR-09, FR-10, FR-15, FR-16, FR-17 to FR-23).
- */
+
+
 public class UndergraduateDashboardFrame extends JFrame {
     private final CourseService courseService;
     private final AttendanceService attendanceService;
