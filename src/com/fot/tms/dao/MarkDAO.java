@@ -7,10 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Data Access Object for Student Marks, Grades, and GPA.
- * Compliant with FR-17 to FR-23 and UGC Circular No. 12-2024.
- */
+
+
 public class MarkDAO {
 
     public boolean recordOrUpdateMark(Mark mark) {

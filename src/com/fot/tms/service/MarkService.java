@@ -12,9 +12,7 @@ import com.fot.tms.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Service for Mark calculation, Grading per UGC Circular 12-2024, and Exam Eligibility (FR-17 to FR-23).
- */
+
 public class MarkService {
     private final MarkDAO markDAO;
     private final CourseDAO courseDAO;
